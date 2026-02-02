@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>Gateway</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: url('background.jpg') no-repeat center center/cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .box {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            width: 280px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            text-align: center;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background: #ff4d6d;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #ff1f4a;
+        }
+
+        .error {
+            color: #ffaaaa;
+            margin-top: 10px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <input type="password" id="password" placeholder="Enter Password">
+    <button onclick="checkPassword()">Enter</button>
+    <div class="error" id="error">Wrong password</div>
+</div>
+
+<script>
+    function checkPassword() {
+        const pass = document.getElementById("password").value;
+        if (pass === "5050") {
+            window.location.href = "love.html";
+        } else {
+            document.getElementById("error").style.display = "block";
+        }
+    }
+</script>
+
+</body>
+</html>

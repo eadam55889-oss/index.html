@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>JJ Game</title>
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        background: radial-gradient(circle at top, #1a1a1a, #000);
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        color: white;
+        position: relative;
+    }
+
+    .score, .timer {
+        position: fixed;
+        top: 15px;
+        font-size: 24px;
+        background: rgba(0,0,0,0.6);
+        padding: 10px 20px;
+        border-radius: 20px;
+        z-index: 10;
+    }
+
+    .score { left: 20px; }
+    .timer { right: 20px; }
+
+    .circle {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        position: absolute;
+        cursor: pointer;
+        animation: fall linear;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        color: white;
+        font-size: 18px;
+        user-select: none;
+    }
+
+    @keyframes fall {
+        from { top: -80px; }
+        to { top: 110vh; }
+    }
+
+    /* الدائرة الكبيرة للبداية */
+    .start-circle {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background: #ff4d6d;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 22px;
+        cursor: pointer;
+        z-index: 20;
+        text-align: center;
+        padding: 20px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="score">0 / 50</div>
+<div class="timer">60</div>
+<audio id="bgMusic" src="music.mp3"></audio>
+
+<!-- الدائرة التعليمية -->
+<div class="start-circle" id="startCircle">طلعي خمسين كورة خضرا</div>
+
+<script>
+let score = 0;
+let timer = 60;
+let gameStarted = false;
+const scoreBox = document.querySelector(".score");
+const timerBox = document.querySelector(".timer");
+const music = document.getElementById("bgMusic");
+const startCircle = document.getElementById("startCircle");
+
+// إنشاء الكور الصغيرة
+function createCircle() {
+    if (score >= 50 || timer <= 0) return;
+
+    const circle = document.createElement("div");
+    circle.className = "circle";
+    // تحسين استجابة اللمس: pointer + touch + click
+    // اختيار اللون: 60% أخضر، 40% أحمر
+    const isGreen = Math.random() < 0.7;
+    circle.style.background = isGreen ? "green" : "red";
+    circle.dataset.isGreen = isGreen ? "true" : "false";
+
+    const size = Math.random() * 30 + 60; // أكبر لتسهيل الضغط
+    circle.style.width = size + "px";
+    circle.style.height = size + "px";
+
+    circle.style.left = Math.random() * (window.innerWidth - size) + "px";
+    const duration = Math.random() * 2 + 3;
+    circle.style.animationDuration = duration + "s";
+
+    circle.addEventListener("click", () => {
+        if (circle.dataset.isGreen === "true") {
+            score++;
+        } else {
+            score = Math.max(0, score - 1);
+        }
+        scoreBox.textContent = score + " / 50";
+        circle.remove();
+
+        if (score >= 50) window.location.href = "mm.html";
+    });
+
+    document.body.appendChild(circle);
+
+    setTimeout(() => circle.remove(), duration * 1000);
+}
+
+// عداد الوقت
+function countdown() {
+    if (timer <= 0 || score >= 50) {
+        window.location.href = "mm.html";
+        return;
+    }
+    timer--;
+    timerBox.textContent = timer;
+}
+
+// بدء اللعبة عند الضغط على الدائرة الكبيرة
+startCircle.addEventListener("click", () => {
+    gameStarted = true;
+    startCircle.remove(); // إزالة الدائرة الكبيرة
+    music.play();
+
+    setInterval(createCircle, 700);
+    setInterval(countdown, 1000);
+}, { once: true });
+
+</script>
+
+</body>
+</html>

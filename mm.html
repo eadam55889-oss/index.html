@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>صفحة القلوب - أسئلة رومانسية</title>
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle at top, #ffdde1, #ee9ca7);
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    position: relative;
+}
+
+/* المربعات على شكل قلب */
+.heart-square {
+    width: 100px;
+    height: 100px;
+    background: #ff6f91;
+    clip-path: polygon(50% 0%, 61% 14%, 75% 15%, 84% 28%, 85% 42%, 75% 60%, 50% 90%, 25% 60%, 15% 42%, 16% 28%, 25% 15%, 39% 14%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 24px;
+    position: absolute;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    text-align: center;
+}
+.heart-square:hover {
+    transform: scale(1.2);
+}
+
+/* تأثير اللمس */
+.heart-square:active {
+    transform: scale(1.5);
+    box-shadow: 0 0 20px #fff;
+}
+
+#questionBox {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff;
+    color: #333;
+    padding: 30px;
+    border-radius: 15px;
+    display: none;
+    text-align: center;
+    z-index: 50;
+    width: 300px;
+}
+button.option {
+    display: block;
+    margin: 10px auto;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    background: #ff6f91;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.2s;
+}
+button.option:hover {
+    background: #ff4d6d;
+}
+</style>
+</head>
+<body>
+
+<div id="questionBox">
+    <div id="questionText"></div>
+    <div id="options"></div>
+</div>
+
+<script>
+// الأسئلة
+const questions = [
+    { q: "لون عيني انا إيه؟", options: ["أسود","أزرق","أخضر","بني"], correct: "بني" },
+    { q: "أكتر حاجة بحبها فيكي إيه؟", options: ["ضحك","أخلاقك","هدايا","اهتمام"], correct: "أخلاقك" },
+    { q: "اخر مرة شفتك فيها كانت إمتى؟", options: ["النهاردة","امبارح","من اسبوع","من شهر"], correct: "من شهر" },
+    { q: "إيه الحاجة اللي بتضحكني دايمًا؟", options: ["ضحكتك","نكاتك","طبعك","هدية عملتها"], correct: "طبعك" },
+    { q: "إيه أكتر حاجة فرحتني معاكي؟", options: ["قعدتنا سوا","رسالتك","هديتك","مكالمة"], correct: "قعدتنا سوا" },
+    { q: "أكتر لحظة مستحيل أنساها؟", options: ["ضحكنا","سفرنا","قعدة سوا","هدية جات"], correct: "قعدة سوا" },
+    { q: "أكتر حاجة بتخليني أبتسم لما بشوفك؟", options: ["ابتسامتك","ضحكتك","أخلاقك","نظرتك"], correct: "نظرتك" }
+];
+
+let currentQuestion = 0;
+const heartSquares = [];
+
+// إنشاء المربعات على شكل قلب عشوائي
+for(let i=0; i<questions.length; i++){
+    const square = document.createElement("div");
+    square.className = "heart-square";
+    square.textContent = "♥";
+    square.style.top = Math.random()*(window.innerHeight-120)+"px";
+    square.style.left = Math.random()*(window.innerWidth-120)+"px";
+    document.body.appendChild(square);
+    heartSquares.push(square);
+
+    // حركة بسيطة
+    let dx = (Math.random()*2+1)*(Math.random()<0.5?-1:1);
+    let dy = (Math.random()*2+1)*(Math.random()<0.5?-1:1);
+    setInterval(()=>{
+        let top = square.offsetTop + dy;
+        let left = square.offsetLeft + dx;
+        if(top <0 || top>window.innerHeight-100) dy*=-1;
+        if(left <0 || left>window.innerWidth-100) dx*=-1;
+        square.style.top = top+"px";
+        square.style.left = left+"px";
+    },30);
+
+    // عند الضغط على القلب
+    square.addEventListener("click", ()=>{
+        showQuestion(i);
+    });
+}
+
+const questionBox = document.getElementById("questionBox");
+const questionText = document.getElementById("questionText");
+const optionsDiv = document.getElementById("options");
+
+function showQuestion(index){
+    const q = questions[index];
+    questionText.textContent = q.q;
+    optionsDiv.innerHTML = "";
+
+    q.options.forEach(opt=>{
+        const btn = document.createElement("button");
+        btn.className = "option";
+        btn.textContent = opt;
+        btn.addEventListener("click", ()=>{
+            if(opt === q.correct){
+                heartSquares[index].style.display = "none"; // اختفاء القلب بعد الإجابة الصح
+                currentQuestion++;
+                questionBox.style.display = "none";
+                // إذا خلصت كل الأسئلة
+                if(currentQuestion >= questions.length){
+                    window.location.href = "hhj.html"; // التحويل للصفحة الجديدة
+                }
+            } else {
+                alert("مش دي متشلنيش🤦‍♂️");
+            }
+        });
+        optionsDiv.appendChild(btn);
+    });
+
+    questionBox.style.display = "block";
+}
+</script>
+
+</body>
+</html>

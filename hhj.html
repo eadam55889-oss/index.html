@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>رسالة أخيرة</title>
+<style>
+body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle at top, #ffe6e6, #ffcccc);
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    position: relative;
+}
+
+/* الصندوق اللي بيظهر فيه الكلمات */
+#messageBox {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255,255,255,0.8);
+    color: #333;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-size: 22px;
+    min-width: 300px;
+    text-align: center;
+}
+
+/* المنطقة اللي الدائرة تتحرك فيها */
+#zone {
+    position: absolute;
+    top: 100px;
+    left: 50px;
+    right: 50px;
+    bottom: 100px;
+    border: 2px dashed #ff6f91;
+    border-radius: 15px;
+}
+
+/* الدائرة */
+#circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #ff4d6d;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.1s;
+}
+#circle:active {
+    transform: translate(-50%, -50%) scale(1.2);
+}
+</style>
+</head>
+<body>
+
+<div id="messageBox"></div>
+<div id="zone"></div>
+<div id="circle">💌</div>
+
+<script>
+// الرسالة موزعة كلمات
+const message = "انا اسف لو ضايقتك مني او من كلامي انتي غاليه عليا اوي ومش عاوز ولا مستعد اخسرك دلوقتي وبحبك جدا علي فكره وهفضل احبك دايما";
+const words = message.split(" ");
+
+let currentWord = 0;
+
+const messageBox = document.getElementById("messageBox");
+const circle = document.getElementById("circle");
+const zone = document.getElementById("zone");
+
+// إعداد منطقة الحركة
+const zoneRect = zone.getBoundingClientRect();
+let speed = 2; // السرعة الابتدائية
+
+// دالة لتحريك الدائرة داخل الزون
+function moveCircle() {
+    const x = Math.random() * (zoneRect.width - 100); // 100 حجم الدائرة
+    const y = Math.random() * (zoneRect.height - 100);
+    circle.style.left = (zoneRect.left + x) + "px";
+    circle.style.top = (zoneRect.top + y) + "px";
+}
+
+// عند الضغط على الدائرة
+circle.addEventListener("click", () => {
+    if(currentWord < words.length){
+        // إضافة كلمة جديدة للصندوق
+        messageBox.textContent += words[currentWord] + " ";
+        currentWord++;
+        speed += 0.5; // زيادة السرعة تدريجيًا
+        // تحريك الدائرة إلى مكان جديد
+        moveCircle();
+    }
+    if(currentWord === words.length){
+        messageBox.textContent += " ✅"; // علامة انتهاء
+        // ممكن هنا تعمل انتقال لصفحة أخرى لو تحب
+        // window.location.href = "final.html";
+    }
+});
+
+// تحريك الدائرة بشكل تلقائي لتحدي المستخدم
+setInterval(() => {
+    if(currentWord < words.length){
+        // تحريك بسيط مع السرعة
+        const currentLeft = parseFloat(circle.style.left);
+        const currentTop = parseFloat(circle.style.top);
+        const newLeft = currentLeft + (Math.random()*speed - speed/2);
+        const newTop = currentTop + (Math.random()*speed - speed/2);
+
+        // التأكد انها داخل الزون
+        circle.style.left = Math.min(Math.max(zoneRect.left, newLeft), zoneRect.right - 100) + "px";
+        circle.style.top = Math.min(Math.max(zoneRect.top, newTop), zoneRect.bottom - 100) + "px";
+    }
+}, 100);
+</script>
+
+</body>
+</html>

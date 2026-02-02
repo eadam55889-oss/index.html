@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>Love Question</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background: linear-gradient(135deg, #1f1c2c, #928dab);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .box {
+            background: rgba(0,0,0,0.7);
+            padding: 30px;
+            border-radius: 15px;
+            width: 320px;
+            text-align: center;
+            color: white;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .option {
+            background: #ff4d6d;
+            margin: 10px 0;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .option:hover {
+            background: #ff1f4a;
+        }
+
+        .error {
+            margin-top: 15px;
+            color: #ffaaaa;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <h2>امتي اول يوم شوفتك؟</h2>
+
+    <div class="option" onclick="checkAnswer('27/3')">27/3</div>
+    <div class="option" onclick="checkAnswer('28/3')">28/3</div>
+    <div class="option" onclick="checkAnswer('9/7')">9/7</div>
+    <div class="option" onclick="checkAnswer('5/3')">5/3</div>
+
+    <div class="error" id="error">بطلي استعباط شويه</div>
+</div>
+
+<script>
+    function checkAnswer(answer) {
+        if (answer === "27/3") {
+            window.location.href = "hh.html";
+        } else {
+            document.getElementById("error").style.display = "block";
+        }
+    }
+</script>
+
+</body>
+</html>

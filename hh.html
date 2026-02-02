@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+<meta charset="UTF-8">
+<title>HH</title>
+
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        background: #0f0f0f;
+        font-family: Arial, sans-serif;
+        position: relative;
+        overflow: hidden;
+        color: white;
+    }
+
+    .question {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 32px; /* كبّرنا الخط شوية عشان يناسب الصور */
+        text-align: center;
+        z-index: 2;
+        width: 100%;
+    }
+
+    .box {
+        /* تم تكبير الحجم من 160px إلى 250px */
+        width: 250px; 
+        height: 250px;
+        position: absolute;
+        cursor: pointer;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 2px solid #333;
+        transition: 0.3s;
+        background: #000;
+    }
+
+    .box:hover {
+        transform: scale(1.05);
+        border-color: #ff4d6d;
+    }
+
+    .box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* أضفنا مسافة بسيطة من الحواف لضمان التنسيق */
+    .top-left { top: 30px; left: 30px; }
+    .top-right { top: 30px; right: 30px; }
+    .bottom-left { bottom: 30px; left: 30px; }
+    .bottom-right { bottom: 30px; right: 30px; }
+
+    .error {
+        position: absolute;
+        bottom: 10%; /* نزلنا مكان الرسالة شوية عشان الصور الكبيرة */
+        left: 50%;
+        transform: translateX(-50%);
+        color: #ffaaaa;
+        font-size: 20px;
+        display: none;
+        z-index: 3;
+    }
+
+    @keyframes shake {
+        0% { transform: translateX(0); }
+        25% { transform: translateX(-6px); }
+        50% { transform: translateX(6px); }
+        75% { transform: translateX(-6px); }
+        100% { transform: translateX(0); }
+    }
+
+    .fade-out {
+        animation: shake 0.35s;
+        opacity: 0;
+        transform: scale(0.75);
+        transition: opacity 0.7s ease, transform 0.7s ease;
+        pointer-events: none;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="question">انهي صورة بحبها؟</div>
+
+<div class="box top-left" onclick="rightAnswer()">
+    <img src="img1.jpg">
+</div>
+
+<div class="box top-right" onclick="wrongAnswer(this)">
+    <img src="img2.jpg">
+</div>
+
+<div class="box bottom-left" onclick="wrongAnswer(this)">
+    <img src="img3.jpg">
+</div>
+
+<div class="box bottom-right" onclick="wrongAnswer(this)">
+    <img src="img4.jpg">
+</div>
+
+<div class="error" id="error">هعمل نفسي مأخدش بالي مش دي 🙄</div>
+
+<script>
+    function wrongAnswer(el) {
+        el.classList.add("fade-out");
+        document.getElementById("error").style.display = "block";
+    }
+
+    function rightAnswer() {
+        window.location.href = "jj.html";
+    }
+</script>
+
+</body>
+</html>
